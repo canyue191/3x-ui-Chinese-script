@@ -129,7 +129,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script/codex/chinese-install-script/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/main/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -148,7 +148,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script/codex/chinese-install-script/update.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/main/update.sh)
     if [[ $? == 0 ]]; then
         LOGI "Update is complete, Panel has automatically restarted "
         before_show_menu
@@ -166,64 +166,11 @@ update_dev() {
     fi
     # XUI_UPDATE_TAG tells update.sh to install the dev-latest pre-release
     # instead of the latest stable tag.
-    XUI_UPDATE_TAG="dev-latest" bash <(curl -Ls https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script/codex/chinese-install-script/update.sh)
+    XUI_UPDATE_TAG="dev-latest" bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/main/update.sh)
     if [[ $? == 0 ]]; then
         LOGI "Dev update is complete, Panel has automatically restarted "
         before_show_menu
     fi
-}
-
-translate_xui_menu() {
-    local file="$1"
-    [[ -f "$file" ]] || return 1
-
-    sed -i \
-        -e '/^show_menu() {/,/^}/ s/3X-UI Panel Management Script/3X-UI 面板管理脚本/g' \
-        -e '/^show_menu() {/,/^}/ s/Exit Script/退出脚本/g' \
-        -e '/^show_menu() {/,/^}/ s/Update to Dev Channel (latest commit)/更新到开发版（最新提交）/g' \
-        -e '/^show_menu() {/,/^}/ s/Update Menu/更新菜单/g' \
-        -e '/^show_menu() {/,/^}/ s/Legacy Version/旧版安装/g' \
-        -e '/^show_menu() {/,/^}/ s/Reset Username & Password/重置用户名和密码/g' \
-        -e '/^show_menu() {/,/^}/ s/Reset Web Base Path/重置面板路径/g' \
-        -e '/^show_menu() {/,/^}/ s/Reset Settings/重置设置/g' \
-        -e '/^show_menu() {/,/^}/ s/Change Port/修改端口/g' \
-        -e '/^show_menu() {/,/^}/ s/View Current Settings/查看当前设置/g' \
-        -e '/^show_menu() {/,/^}/ s/Restart Xray/重启 Xray/g' \
-        -e '/^show_menu() {/,/^}/ s/Logs Management/日志管理/g' \
-        -e '/^show_menu() {/,/^}/ s/Enable Autostart/启用开机自启/g' \
-        -e '/^show_menu() {/,/^}/ s/Disable Autostart/关闭开机自启/g' \
-        -e '/^show_menu() {/,/^}/ s/SSL Certificate Management/SSL 证书管理/g' \
-        -e '/^show_menu() {/,/^}/ s/Cloudflare SSL Certificate/Cloudflare SSL 证书/g' \
-        -e '/^show_menu() {/,/^}/ s/IP Limit Management/IP 限制管理/g' \
-        -e '/^show_menu() {/,/^}/ s/Firewall Management/防火墙管理/g' \
-        -e '/^show_menu() {/,/^}/ s/SSH Port Forwarding Management/SSH 端口转发管理/g' \
-        -e '/^show_menu() {/,/^}/ s/PostgreSQL Management/PostgreSQL 管理/g' \
-        -e '/^show_menu() {/,/^}/ s/Enable BBR/启用 BBR/g' \
-        -e '/^show_menu() {/,/^}/ s/Update Geo Files/更新 Geo 文件/g' \
-        -e '/^show_menu() {/,/^}/ s/Speedtest by Ookla/Ookla 网速测试/g' \
-        -e '/^show_menu() {/,/^}/ s/Please enter your selection/请输入选项/g' \
-        -e '/^show_menu() {/,/^}/ s/Install/安装/g' \
-        -e '/^show_menu() {/,/^}/ s/Update/更新/g' \
-        -e '/^show_menu() {/,/^}/ s/Uninstall/卸载/g' \
-        -e '/^show_menu() {/,/^}/ s/Start/启动/g' \
-        -e '/^show_menu() {/,/^}/ s/Stop/停止/g' \
-        -e '/^show_menu() {/,/^}/ s/Restart/重启/g' \
-        -e '/^show_menu() {/,/^}/ s/Check Status/查看状态/g' \
-        -e '/^show_status() {/,/^}/ s/Panel state:/面板状态：/g' \
-        -e '/^show_status() {/,/^}/ s/Not Running/未运行/g' \
-        -e '/^show_status() {/,/^}/ s/Not Installed/未安装/g' \
-        -e '/^show_status() {/,/^}/ s/Running/运行中/g' \
-        -e '/^show_enable_status() {/,/^}/ s/Start automatically:/开机自启：/g' \
-        -e '/^show_enable_status() {/,/^}/ s/Managed by Docker/由 Docker 管理/g' \
-        -e '/^show_enable_status() {/,/^}/ s/Yes/是/g' \
-        -e '/^show_enable_status() {/,/^}/ s/No/否/g' \
-        -e '/^show_xray_status() {/,/^}/ s/xray state:/Xray 状态：/g' \
-        -e '/^show_xray_status() {/,/^}/ s/Not Running/未运行/g' \
-        -e '/^show_xray_status() {/,/^}/ s/Running/运行中/g' \
-        -e '/^show_mtproto_status() {/,/^}/ s/mtproto inbound/MTProto 入站/g' \
-        -e '/^show_mtproto_status() {/,/^}/ s/Not Running/未运行/g' \
-        -e '/^show_mtproto_status() {/,/^}/ s/Running/运行中/g' \
-        "$file"
 }
 
 replace_xui_script() {
@@ -247,11 +194,6 @@ replace_xui_script() {
         # -z above means "not modified since /usr/bin/x-ui" rather than a
         # real failure, so an empty download here is success, not an error.
         [[ "$use_if_modified_since" == "true" ]] && return 0
-        return 1
-    fi
-
-    if ! translate_xui_menu "$temp_file"; then
-        rm -f "$temp_file"
         return 1
     fi
 
@@ -309,7 +251,7 @@ legacy_version() {
         exit 1
     fi
     # Use the entered panel version in the download link
-    install_command="bash <(curl -Ls "https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script/codex/chinese-install-script/install.sh") v$tag_version"
+    install_command="bash <(curl -Ls "https://raw.githubusercontent.com/mhsanaei/3x-ui/v$tag_version/install.sh") v$tag_version"
 
     echo "Downloading and installing panel version $tag_version..."
     eval $install_command
@@ -1020,15 +962,15 @@ show_status() {
     check_status
     case $? in
         0)
-            echo -e "面板状态：${green}运行中${plain}"
+            echo -e "Panel state: ${green}Running${plain}"
             show_enable_status
             ;;
         1)
-            echo -e "面板状态：${yellow}未运行${plain}"
+            echo -e "Panel state: ${yellow}Not Running${plain}"
             show_enable_status
             ;;
         2)
-            echo -e "面板状态：${red}未安装${plain}"
+            echo -e "Panel state: ${red}Not Installed${plain}"
             ;;
     esac
     show_xray_status
@@ -1037,14 +979,14 @@ show_status() {
 
 show_enable_status() {
     if [[ "${running_in_docker}" == "true" ]]; then
-        echo -e "开机自启：${green}由 Docker 管理${plain}"
+        echo -e "Start automatically: ${green}Managed by Docker${plain}"
         return
     fi
     check_enabled
     if [[ $? == 0 ]]; then
-        echo -e "开机自启：${green}是${plain}"
+        echo -e "Start automatically: ${green}Yes${plain}"
     else
-        echo -e "开机自启：${red}否${plain}"
+        echo -e "Start automatically: ${red}No${plain}"
     fi
 }
 
@@ -1060,9 +1002,9 @@ check_xray_status() {
 show_xray_status() {
     check_xray_status
     if [[ $? == 0 ]]; then
-        echo -e "Xray 状态：${green}运行中${plain}"
+        echo -e "xray state: ${green}Running${plain}"
     else
-        echo -e "Xray 状态：${red}未运行${plain}"
+        echo -e "xray state: ${red}Not Running${plain}"
     fi
 }
 
@@ -1086,9 +1028,9 @@ show_mtproto_status() {
         id=$(echo "${name}" | sed -E 's/mtg-([0-9]+)\.toml/\1/')
         bind=$(grep -E '^[[:space:]]*bind-to' "$f" | head -1 | cut -d'"' -f2)
         if echo "${running}" | grep -qx "${name}"; then
-            echo -e "MTProto 入站 ${id} (${bind}): ${green}运行中${plain}"
+            echo -e "mtproto inbound ${id} (${bind}): ${green}Running${plain}"
         else
-            echo -e "MTProto 入站 ${id} (${bind}): ${red}未运行${plain}"
+            echo -e "mtproto inbound ${id} (${bind}): ${red}Not Running${plain}"
         fi
     done
 }
@@ -3562,46 +3504,46 @@ show_usage() {
 show_menu() {
     echo -e "
 ╔────────────────────────────────────────────────╗
-│  ${green}3X-UI 面板管理脚本${plain}                           │
-│  ${green}0.${plain} 退出脚本                                  │
+│  ${green}3X-UI Panel Management Script${plain}                │
+│  ${green}0.${plain} Exit Script                               │
 │────────────────────────────────────────────────│
-│  ${green}1.${plain} 安装                                      │
-│  ${green}2.${plain} 更新                                      │
-│  ${green}3.${plain} 更新到开发版（最新提交）                  │
-│  ${green}4.${plain} 更新菜单                                  │
-│  ${green}5.${plain} 旧版安装                                  │
-│  ${green}6.${plain} 卸载                                      │
+│  ${green}1.${plain} Install                                   │
+│  ${green}2.${plain} Update                                    │
+│  ${green}3.${plain} Update to Dev Channel (latest commit)     │
+│  ${green}4.${plain} Update Menu                               │
+│  ${green}5.${plain} Legacy Version                            │
+│  ${green}6.${plain} Uninstall                                 │
 │────────────────────────────────────────────────│
-│  ${green}7.${plain} 重置用户名和密码                          │
-│  ${green}8.${plain} 重置面板路径                              │
-│  ${green}9.${plain} 重置设置                                  │
-│  ${green}10.${plain} 修改端口                                │
-│  ${green}11.${plain} 查看当前设置                            │
+│  ${green}7.${plain} Reset Username & Password                 │
+│  ${green}8.${plain} Reset Web Base Path                       │
+│  ${green}9.${plain} Reset Settings                            │
+│  ${green}10.${plain} Change Port                              │
+│  ${green}11.${plain} View Current Settings                    │
 │────────────────────────────────────────────────│
-│  ${green}12.${plain} 启动                                     │
-│  ${green}13.${plain} 停止                                     │
-│  ${green}14.${plain} 重启                                     │
-|  ${green}15.${plain} 重启 Xray                                │
-│  ${green}16.${plain} 查看状态                                │
-│  ${green}17.${plain} 日志管理                                │
+│  ${green}12.${plain} Start                                    │
+│  ${green}13.${plain} Stop                                     │
+│  ${green}14.${plain} Restart                                  │
+|  ${green}15.${plain} Restart Xray                             │
+│  ${green}16.${plain} Check Status                             │
+│  ${green}17.${plain} Logs Management                          │
 │────────────────────────────────────────────────│
-│  ${green}18.${plain} 启用开机自启                            │
-│  ${green}19.${plain} 关闭开机自启                            │
+│  ${green}18.${plain} Enable Autostart                         │
+│  ${green}19.${plain} Disable Autostart                        │
 │────────────────────────────────────────────────│
-│  ${green}20.${plain} SSL 证书管理                            │
-│  ${green}21.${plain} Cloudflare SSL 证书                     │
-│  ${green}22.${plain} IP 限制管理                            │
-│  ${green}23.${plain} 防火墙管理                              │
-│  ${green}24.${plain} SSH 端口转发管理                       │
-│  ${green}25.${plain} PostgreSQL 管理                        │
+│  ${green}20.${plain} SSL Certificate Management               │
+│  ${green}21.${plain} Cloudflare SSL Certificate               │
+│  ${green}22.${plain} IP Limit Management                      │
+│  ${green}23.${plain} Firewall Management                      │
+│  ${green}24.${plain} SSH Port Forwarding Management           │
+│  ${green}25.${plain} PostgreSQL Management                    │
 │────────────────────────────────────────────────│
-│  ${green}26.${plain} 启用 BBR                               │
-│  ${green}27.${plain} 更新 Geo 文件                         │
-│  ${green}28.${plain} Ookla 网速测试                         │
+│  ${green}26.${plain} Enable BBR                               │
+│  ${green}27.${plain} Update Geo Files                         │
+│  ${green}28.${plain} Speedtest by Ookla                       │
 ╚────────────────────────────────────────────────╝
 "
     show_status
-    echo && read -rp "请输入选项 [0-28]：" num
+    echo && read -rp "Please enter your selection [0-28]: " num
 
     case "${num}" in
         0)
