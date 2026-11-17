@@ -91,6 +91,12 @@ bash <(curl -Ls https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script
 
 安装过程中会生成随机的用户名、密码和访问路径。安装完成后，运行 `x-ui` 打开管理菜单，您可以在其中启动/停止服务、查看或重置登录凭据、管理 SSL 证书等。
 
+如果已安装的管理菜单仍显示英文，可用 root 执行以下命令翻译菜单，无需重新安装面板：
+
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/canyue191/3x-ui-Chinese-script/codex/chinese-install-script/translate-xui-menu.sh)
+```
+
 每个发布资源都会在其旁边附带一个 `.sha256` 校验和。`install.sh` 和更新程序都会据此校验压缩包，不匹配时中止。
 
 完整文档（安装、配置、运维以及完整的 API 参考）请访问 **[docs.sanaei.dev](https://docs.sanaei.dev/zh)**。
